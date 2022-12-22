@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class BDConnect {
+    private  Connection connection;
     private static BDConnect instance;
     private BDConnect() {}
     public static BDConnect getInstance(){
@@ -14,7 +15,6 @@ public class BDConnect {
     }
 
     public Statement getStatement(){
-        Connection connection;
         Statement statement;
         try {
             connection = DriverManager.getConnection(BDSettings.URL, BDSettings.DB_USER,BDSettings.DB_PSWRD);
@@ -23,5 +23,12 @@ public class BDConnect {
             throw new RuntimeException(e);
         }
         return statement;
+    }
+    public void disconnect(){
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
