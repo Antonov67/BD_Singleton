@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class BDConnect {
-    private  Connection connection;
     private static BDConnect instance;
     private BDConnect() {}
     public static BDConnect getInstance(){
@@ -13,22 +12,13 @@ public class BDConnect {
         }
         return instance;
     }
-
-    public Statement getStatement(){
-        Statement statement;
+    public Connection getConnection(String url, String user, String pswrd){
+        Connection connection;
         try {
-            connection = DriverManager.getConnection(BDSettings.URL, BDSettings.DB_USER,BDSettings.DB_PSWRD);
-            statement = connection.createStatement();
+            connection = DriverManager.getConnection(url, user, pswrd);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return statement;
-    }
-    public void disconnect(){
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        return connection;
     }
 }
